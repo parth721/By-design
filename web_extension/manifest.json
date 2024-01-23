@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "version": "1.0.0",
+    "name": "__By_Design__",
+    "description": "__By_Design__",
+    "homepage_url": "https://github.com/parth721/web-extention-c-",
+    "browser_specific_settings": {
+      "gecko_android": {}
+    },
+   
+    "default_locale": "en",
+    "content_scripts": [
+      {
+        "matches": [
+          "*://*.youtube.com/*"
+        ],
+        "js": [
+          "common.js",
+          "modify.js"
+        ],
+        "run_at": "document_start"
+      }
+    ],
+    "options_ui": {
+      "page": "options.html",
+      "browser_style": true
+    },
+    "permissions": [
+      "storage"
+    ]
+  }
