@@ -7,8 +7,6 @@ zip -r - . --exclude \
   package.sh \
   ".git/*" \
   .gitignore \
-  #img/1280x800.png \
-  #img/icon.svg \
   README.md \
 > package.zip
 

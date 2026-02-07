@@ -11,9 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
     // Load existing settings
     const options = await loadOptions();
-    document.forms[0].syncSettings.checked = options.syncSettings;
-    document.forms[0].thumbnailMode.value = options.thumbnailMode;
-    document.forms[0].disableEverywhere.checked = options.disabledOnPages.everywhere;
+    document.forms[0].focusMode.checked = options.focusMode;
   });
   
   // Save on change
@@ -22,11 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     status.textContent = `⏳ ${browser.i18n.getMessage('options_saving')}`
   
     await saveOptions({
-      syncSettings: document.forms[0].syncSettings.checked,
-      thumbnailMode: document.forms[0].thumbnailMode.value,
-      disabledOnPages: {
-        everywhere: document.forms[0].disableEverywhere.checked,
-      },
+      focusMode: document.forms[0].focusMode.checked,
+
     })
   
     // Artificial delay, so the 'saving' message actually appears
@@ -41,7 +36,4 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   const saveOptions = async (options) => new Promise((resolve) => {
     browser.storage.local.set(options, resolve);
-    if (options.syncSettings) {
-      browser.storage.sync.set(options, resolve);
-    }
   })

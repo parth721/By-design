@@ -1,9 +1,7 @@
 /** @typedef {import("./common")} */
 
-const css = {
-    "normal": "/* Nothing to do */",
-    "hidden": `
-  ytd-thumbnail, ytd-playlist-thumbnail, .rich-thumbnail, .ytd-playlist-header-renderer.thumbnail-wrapper, #thumbnail, #video-preview, ytm-media-item .media-item-thumbnail-container, ytm-reel-item-renderer .video-thumbnail-container-vertical, ytm-playlist-video-renderer .compact-media-item-image, .ytp-videowall-still-image {
+const css = `
+  ytd-thumbnail, ytd-playlist-thumbnail, .rich-thumbnail, .ytd-playlist-header-renderer.thumbnail-wrapper, #thumbnail, #video-preview, ytm-media-item .media-item-thumbnail-container, ytm-reel-item-renderer .video-thumbnail-container-vertical, ytm-playlist-video-renderer .compact-media-item-image, .ytp-videowall-still-image, grid-shelf-view-model {
     display: none !important;
   }
   ytm-reel-shelf-renderer .reel-shelf-items>* {
@@ -30,8 +28,22 @@ const css = {
   }
   .ytp-videowall-still-info-content {
     opacity: 1 !important;
-  }`,
-  };
+  }
+  html {
+   filter : grayscale(1) !important; 
+  }
+  ytd-topbar-logo-renderer, #scroll-container {
+     display : none !important;
+  }
+  .ytp-prev-button, .ytp-next-button {
+     display : none !important;
+  }
+  #page-header-banner{
+    visibility : hidden !important;
+  }
+  ytd-miniplayer.style-scope.ytd-app {
+    top : inherit !important;
+  }`;
   
   const elem = document.createElement("style");
   document.documentElement.appendChild(elem);
@@ -39,16 +51,14 @@ const css = {
   const updateElem = async () => {
     const options = await loadOptions()
   
-    const isDisabled = options.disabledOnPages.everywhere
-      || (options.disabledOnPages.results && window.location.pathname === '/results')
-      || (options.disabledOnPages.channel && window.location.pathname.startsWith('/@'))
-      || (options.disabledOnPages.playlist && window.location.pathname === '/playlist')
-      || (options.disabledOnPages.watch && window.location.pathname === '/watch')
-      || (options.disabledOnPages.subscriptions && window.location.pathname === '/feed/subscriptions');
-  
-    elem.innerHTML = `/* Modified by UserDesign */
-    ${css[isDisabled ? 'normal' : options.thumbnailMode]}`
-  }
+    if(options.focusMode) {
+      elem.textContent = `/* Modified by ByDesign */
+      ${css}`;
+      return;
+    }else{
+      elem.textContent = "";
+    }
+  };
   
   // Update when settings are changed
   browser.storage.onChanged.addListener(updateElem)
@@ -64,3 +74,4 @@ const css = {
   
   // Initialize on load
   updateElem()
+
